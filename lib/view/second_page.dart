@@ -13,13 +13,14 @@ class SecondPage extends StatefulWidget {
 
 class _SecondPageState extends State<SecondPage> {
   late DatabaseHandler handler;
-  bool isChecked = false;
+  List<bool> isChecked = []; // 체크박스 value
 
   @override
   void initState() {
     super.initState();
     handler = DatabaseHandler();
     reloadData();
+    isChecked = [];
   }
 
   @override
@@ -49,7 +50,11 @@ class _SecondPageState extends State<SecondPage> {
                                 snapshot
                                     .data![index]
                                     .priority,
-                              );
+                                snapshot
+                                        .data![index]
+                                        .complete ??
+                                    false,
+                              ); // complete 값 주기
                               setState(() {});
                             },
                           ),
@@ -91,10 +96,14 @@ class _SecondPageState extends State<SecondPage> {
                                     '${snapshot.data![index].todo}       ㅣ ${snapshot.data![index].memo}',
                                   ),
                                   Checkbox(
-                                    value: isChecked,
+                                    value:
+                                        (isChecked.length >
+                                            index)
+                                        ? isChecked[index]
+                                        : false,
                                     onChanged: (value) {
-                                      isChecked =
-                                          value ?? false;
+                                      isChecked[index] =
+                                          value!;
                                       setState(() {});
                                     },
                                   ),
@@ -124,8 +133,9 @@ class _SecondPageState extends State<SecondPage> {
 
   //
   //----------
-  reloadData() {
-    handler.querytodo();
+  reloadData() async {
+    var data = await handler.querytodo(); // data생설할 때마다..
+    isChecked = List.generate(data.length, (_) => false);
     setState(() {});
   }
 

@@ -91,8 +91,6 @@ class _AddPageState extends State<AddPage> {
   //
   //-------function
   Future insertAction() async {
-    // imageName = 'images/$imageName.jpg';
-
     var insertlist = TodoList(
       todo: todotextcontroller.text,
       priority: imageName,

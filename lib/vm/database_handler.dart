@@ -17,7 +17,8 @@ class DatabaseHandler {
           todo text,
           initdate date,
           memo text,
-          priority text
+          priority text,
+          complete integer default 0
           )
           """);
 
@@ -27,7 +28,8 @@ class DatabaseHandler {
           todo text,
           initdate date,
           memo text,
-          priority text
+          priority text,
+          complete integer default 0
           )
           """);
       },
@@ -61,11 +63,16 @@ class DatabaseHandler {
     final Database db = await initializeDB();
     result = await db.rawInsert(
       """
-      insert into todolist (todo, memo, priority)
+      insert into todolist (todo, memo, priority, complete)
       values
-      (?,?,?)
+      (?,?,?,?)
       """,
-      [todolist.todo, todolist.memo, todolist.priority],
+      [
+        todolist.todo,
+        todolist.memo,
+        todolist.priority,
+        todolist.complete ?? 0,
+      ],
     );
     return result;
   }
@@ -77,13 +84,14 @@ class DatabaseHandler {
     result = await db.rawUpdate(
       """
       update todolist
-      set todo = ?, memo = ?, priority = ?
+      set todo = ?, memo = ?, priority = ?, complete =?
       where id = ?
       """,
       [
         todolist.todo,
         todolist.memo,
         todolist.priority,
+        todolist.complete == true ? 1 : 0,
         todolist.id,
       ],
     );
@@ -96,16 +104,17 @@ class DatabaseHandler {
     String todo,
     String memo,
     String priority,
+    bool complete,
   ) async {
     final Database db = await initializeDB();
     await db.rawInsert(
       """
       insert into deletelist
-      (todo, memo, priority)
+      (todo, memo, priority, complete)
       values
-      (?,?,?)
+      (?,?,?,?)
       """,
-      [todo, memo, priority],
+      [todo, memo, priority, complete ? 1 : 0],
     );
     await db.rawDelete(
       """
