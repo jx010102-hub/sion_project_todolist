@@ -79,7 +79,10 @@ class _AddPageState extends State<AddPage> {
             Image.asset(imageName, width: 200),
 
             ElevatedButton(
-              onPressed: () => insertAction(),
+              onPressed: () {
+                insertAction();
+                setState(() {});
+              },
               child: Text('추가하기'),
             ),
           ],
@@ -90,7 +93,14 @@ class _AddPageState extends State<AddPage> {
 
   //
   //-------function
+
   Future insertAction() async {
+    if (todotextcontroller.text.isEmpty &&
+        memocontroller.text.isEmpty) {
+      Get.back();
+      return;
+    }
+
     var insertlist = TodoList(
       todo: todotextcontroller.text,
       priority: imageName,

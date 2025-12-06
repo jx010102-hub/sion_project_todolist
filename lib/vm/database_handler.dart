@@ -99,6 +99,7 @@ class DatabaseHandler {
   }
 
   // delete 삭제
+
   Future<void> deletelist(
     int id,
     String todo,
@@ -107,20 +108,17 @@ class DatabaseHandler {
     bool complete,
   ) async {
     final Database db = await initializeDB();
+
     await db.rawInsert(
       """
-      insert into deletelist
-      (todo, memo, priority, complete)
-      values
-      (?,?,?,?)
-      """,
+    insert into deletelist(todo, memo, priority, complete)
+    values (?,?,?,?)
+    """,
       [todo, memo, priority, complete ? 1 : 0],
     );
+
     await db.rawDelete(
-      """
-    delete from todolist
-    where id = ?
-    """,
+      "delete from todolist where id = ?",
       [id],
     );
   }

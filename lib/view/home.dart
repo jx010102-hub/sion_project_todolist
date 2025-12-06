@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sion_project02/view/first_page.dart';
 import 'package:sion_project02/view/four_page.dart';
+import 'package:sion_project02/view/login_page.dart';
 import 'package:sion_project02/view/second_page.dart';
 import 'package:sion_project02/view/add_page.dart';
 import 'package:sion_project02/vm/database_handler.dart';
@@ -46,6 +47,7 @@ class _HomeState extends State<Home>
           IconButton(
             onPressed: () {
               //
+              Get.to(LoginPage());
             },
             icon: Icon(Icons.login_rounded),
           ),
