@@ -35,54 +35,57 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text('LOG IN'),
-          backgroundColor: Colors.blueGrey,
+          backgroundColor: Colors.amber,
           foregroundColor: Colors.white,
           centerTitle: true,
         ),
-        body: Center(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(40.0),
-                child: Image.asset(
-                  'images/login.png',
-                  width: 130,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: Divider(),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: TextField(
-                  controller: idController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'ID를 입력하세요',
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Center(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(70.0),
+                  child: Image.asset(
+                    'images/login.png',
+                    width: 130,
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: TextField(
-                  controller: pwContriller,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'PassWord를 입력하세요',
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Divider(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextField(
+                    controller: idController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'ID를 입력하세요',
+                    ),
                   ),
-                  obscureText: true,
                 ),
-              ),
-              ElevatedButton(
-                onPressed: () => insertAction(),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueGrey,
-                  foregroundColor: Colors.white,
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextField(
+                    controller: pwContriller,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'PassWord를 입력하세요',
+                    ),
+                    obscureText: true,
+                  ),
                 ),
-                child: Text('Log In'),
-              ),
-            ],
+                ElevatedButton(
+                  onPressed: () => insertAction(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.amber,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: Text('Log In'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -143,6 +146,7 @@ class _LoginPageState extends State<LoginPage> {
             Get.to(Home(), arguments: idController.text);
             idController.clear();
             pwContriller.clear();
+            FocusScope.of(context).unfocus();
           },
           child: Text('OK'),
         ),

@@ -66,7 +66,7 @@ class DatabaseIdHandler {
     (id, name)
     values (?,?)
     """,
-      [name],
+      [id, name],
     );
 
     await db.rawDelete(

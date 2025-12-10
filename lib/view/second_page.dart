@@ -13,120 +13,181 @@ class SecondPage extends StatefulWidget {
 
 class _SecondPageState extends State<SecondPage> {
   late DatabaseHandler handler;
-  List<bool> isChecked = []; // 체크박스 value
+  List<bool> isChecked = [];
 
   @override
   void initState() {
     super.initState();
     handler = DatabaseHandler();
     reloadData();
-    isChecked = [];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
-        future: handler.querytodo(),
-        builder: (context, snapshot) {
-          return snapshot.hasData &&
-                  snapshot.data!.isNotEmpty
-              ? ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    return Slidable(
-                      endActionPane: ActionPane(
-                        motion: BehindMotion(),
-                        children: [
-                          SlidableAction(
-                            backgroundColor: Colors.red,
-                            icon: Icons.delete,
-                            label: 'Delete',
-                            onPressed: (context) async {
-                              await handler.deletelist(
-                                snapshot.data![index].id!,
-                                snapshot.data![index].todo,
-                                snapshot.data![index].memo,
-                                snapshot
-                                    .data![index]
-                                    .priority,
-                                snapshot
-                                        .data![index]
-                                        .complete ??
-                                    false,
-                              ); // complete 값 주기
-                              setState(() {});
-                            },
-                          ),
-                        ],
-                      ),
-                      child: GestureDetector(
-                        onTap: () => Get.to(
-                          UpdatePage(),
-                          arguments: [
-                            snapshot.data![index].id!,
-                            snapshot.data![index].todo,
-                            snapshot.data![index].memo,
-                            snapshot.data![index].priority,
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: FutureBuilder(
+          future: handler.querytodo(),
+          builder: (context, snapshot) {
+            return snapshot.hasData &&
+                    snapshot.data!.isNotEmpty
+                ? ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      return Slidable(
+                        endActionPane: ActionPane(
+                          motion: BehindMotion(),
+                          children: [
+                            SlidableAction(
+                              backgroundColor: Colors.red,
+                              icon: Icons.delete,
+                              label: 'Delete',
+                              onPressed: (context) async {
+                                await handler.deletelist(
+                                  snapshot.data![index].id!,
+                                  snapshot
+                                      .data![index]
+                                      .todo,
+                                  snapshot
+                                      .data![index]
+                                      .memo,
+                                  snapshot
+                                      .data![index]
+                                      .priority,
+                                  snapshot
+                                          .data![index]
+                                          .complete ??
+                                      false,
+                                ); // complete 값 주기
+                                setState(() {});
+                              },
+                            ),
                           ],
-                        )!.then((vlue) => reloadData()),
+                        ),
+                        child: GestureDetector(
+                          onTap: () => Get.to(
+                            UpdatePage(),
+                            arguments: [
+                              snapshot.data![index].id!,
+                              snapshot.data![index].todo,
+                              snapshot.data![index].memo,
+                              snapshot
+                                  .data![index]
+                                  .priority,
+                              snapshot
+                                  .data![index]
+                                  .complete,
+                            ],
+                          )!.then((vlue) => reloadData()),
 
-                        child: Card(
-                          child: Column(
-                            crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 50,
-                                    child: ClipRRect(
-                                      borderRadius:
-                                          BorderRadiusGeometry.circular(
-                                            50,
-                                          ),
-                                      child: Image.asset(
-                                        snapshot
-                                            .data![index]
-                                            .priority,
+                          child: Card(
+                            child: Column(
+                              crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 50,
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(
+                                              50,
+                                            ),
+                                        child: Image.asset(
+                                          snapshot
+                                              .data![index]
+                                              .priority,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Text(
-                                    '${snapshot.data![index].todo}       ㅣ ${snapshot.data![index].memo}',
-                                  ),
-                                  Checkbox(
-                                    value:
-                                        (isChecked.length >
-                                            index)
-                                        ? isChecked[index]
-                                        : false,
-                                    onChanged: (value) {
-                                      isChecked[index] =
-                                          value!;
-                                      setState(() {});
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ],
+                                    SizedBox(width: 10),
+                                    Expanded(
+                                      // Text가 길어져도 Checkbox 안 밀리도록
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment
+                                                .start,
+                                        children: [
+                                          Text(
+                                            snapshot
+                                                .data![index]
+                                                .todo,
+                                            style: TextStyle(
+                                              fontWeight:
+                                                  FontWeight
+                                                      .bold,
+                                              decoration:
+                                                  isChecked[index]
+                                                  ? TextDecoration
+                                                        .lineThrough
+                                                  : TextDecoration
+                                                        .none,
+                                            ),
+                                          ),
+                                          Text(
+                                            snapshot
+                                                .data![index]
+                                                .memo,
+                                            style: TextStyle(
+                                              color:
+                                                  isChecked[index]
+                                                  ? Colors
+                                                        .grey
+                                                  : Colors
+                                                        .blueGrey,
+                                              decoration:
+                                                  isChecked[index]
+                                                  ? TextDecoration
+                                                        .lineThrough
+                                                  : TextDecoration
+                                                        .none,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Checkbox(
+                                      value:
+                                          isChecked[index],
+                                      onChanged: (value) async {
+                                        isChecked[index] =
+                                            value!;
+                                        await handler
+                                            .updateComplete(
+                                              snapshot
+                                                  .data![index]
+                                                  .id!,
+                                              value,
+                                            );
+                                        setState(() {});
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                )
-              : Center(
-                  child: Column(
-                    mainAxisAlignment:
-                        MainAxisAlignment.center,
-                    children: [
-                      Image.asset('images/pencil.png'),
-                      Text('할 일을 기록하세요'),
-                    ],
-                  ),
-                );
-        },
+                      );
+                    },
+                  )
+                : Center(
+                    child: Column(
+                      mainAxisAlignment:
+                          MainAxisAlignment.end,
+                      children: [
+                        Image.asset(
+                          'images/second02.png',
+                          width: 330,
+                          height: 600,
+                        ),
+                      ],
+                    ),
+                  );
+          },
+        ),
       ),
     );
   }
@@ -134,8 +195,8 @@ class _SecondPageState extends State<SecondPage> {
   //
   //----------
   reloadData() async {
-    var data = await handler.querytodo(); // data생설할 때마다..
-    isChecked = List.generate(data.length, (_) => false);
+    var data = await handler.querytodo();
+    isChecked = data.map((e) => e.complete == 1).toList();
     setState(() {});
   }
 

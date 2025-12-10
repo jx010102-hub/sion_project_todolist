@@ -98,6 +98,19 @@ class DatabaseHandler {
     return result;
   }
 
+  //complte update 함수
+  Future updateComplete(int id, bool complete) async {
+    final Database db = await initializeDB();
+    await db.rawUpdate(
+      """
+      update todolist
+      set complete = ?
+      where id = ?
+      """,
+      [complete ? 1 : 0, id],
+    );
+  }
+
   // delete 삭제
 
   Future<void> deletelist(

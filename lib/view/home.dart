@@ -36,20 +36,34 @@ class _HomeState extends State<Home>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('todo'),
-        leading: IconButton(
-          onPressed: () {
-            //
-          },
-          icon: Icon(Icons.menu),
+        title: Text('TODOLIST'),
+        centerTitle: true,
+        backgroundColor: const Color.fromARGB(
+          255,
+          236,
+          182,
+          20,
         ),
-        actions: [
-          IconButton(
+        foregroundColor: Colors.white,
+        leading: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: IconButton(
             onPressed: () {
               //
-              Get.to(LoginPage());
             },
-            icon: Icon(Icons.login_rounded),
+            icon: Icon(Icons.menu),
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: IconButton(
+              onPressed: () {
+                //
+                Get.to(LoginPage());
+              },
+              icon: Icon(Icons.login_rounded),
+            ),
           ),
         ],
       ),
@@ -62,20 +76,14 @@ class _HomeState extends State<Home>
         height: 80, //바높이
         child: TabBar(
           controller: controller, //탭바뷰와 공유
-          labelColor: Colors.blue,
-          indicatorColor: Colors.blue, //밑에인디케이터색깔
+          labelColor: Colors.blueGrey,
+          indicatorColor: Colors.amber, //밑에인디케이터색깔
           indicatorWeight: 3,
           tabs: [
+            Tab(icon: Icon(Icons.delete), text: "기록"),
+            Tab(icon: Icon(Icons.edit), text: "작업"),
             Tab(
-              icon: Icon(Icons.bar_chart_rounded),
-              text: "기록",
-            ),
-            Tab(
-              icon: Icon(Icons.line_axis_rounded),
-              text: "작업",
-            ),
-            Tab(
-              icon: Icon(Icons.multiline_chart_rounded),
+              icon: Icon(Icons.home_rounded),
               text: "마이홈",
             ),
           ],
@@ -87,8 +95,9 @@ class _HomeState extends State<Home>
           //
           Get.to(AddPage());
         },
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.amber,
         foregroundColor: Colors.white,
+
         child: Icon(Icons.add),
       ),
     );

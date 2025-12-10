@@ -25,73 +25,95 @@ class _FirstPageState extends State<FirstPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
-        future: handler.querytodo2(),
-        builder: (context, snapshot) {
-          return snapshot.hasData &&
-                  snapshot.data!.isNotEmpty
-              ? ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    //
-                    return GestureDetector(
-                      onTap: () =>
-                          recovery(snapshot.data![index]),
-                      child: Slidable(
-                        endActionPane: ActionPane(
-                          motion: BehindMotion(),
-                          children: [
-                            SlidableAction(
-                              backgroundColor: Colors.red,
-                              icon: Icons.delete,
-                              label: 'Delete',
-                              onPressed: (context) async {
-                                await handler.deletelist2(
-                                  snapshot.data![index].id!,
-                                );
-
-                                setState(() {});
-                              },
-                            ),
-                          ],
-                        ),
-                        child: Card(
-                          child: Column(
-                            crossAxisAlignment:
-                                CrossAxisAlignment.start,
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: FutureBuilder(
+          future: handler.querytodo2(),
+          builder: (context, snapshot) {
+            return snapshot.hasData &&
+                    snapshot.data!.isNotEmpty
+                ? ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      //
+                      return GestureDetector(
+                        onTap: () =>
+                            recovery(snapshot.data![index]),
+                        child: Slidable(
+                          endActionPane: ActionPane(
+                            motion: BehindMotion(),
                             children: [
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 50,
-                                    child: ClipRRect(
-                                      borderRadius:
-                                          BorderRadiusGeometry.circular(
-                                            50,
-                                          ),
-                                      child: Image.asset(
-                                        snapshot
-                                            .data![index]
-                                            .priority,
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
+                              SlidableAction(
+                                backgroundColor: Colors.red,
+                                icon: Icons.delete,
+                                label: 'Delete',
+                                onPressed: (context) async {
+                                  await handler.deletelist2(
                                     snapshot
                                         .data![index]
-                                        .todo,
-                                  ),
-                                ],
+                                        .id!,
+                                  );
+
+                                  setState(() {});
+                                },
                               ),
                             ],
                           ),
+                          child: Card(
+                            child: Column(
+                              crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 50,
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadiusGeometry.circular(
+                                              50,
+                                            ),
+                                        child: Image.asset(
+                                          snapshot
+                                              .data![index]
+                                              .priority,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      '     ${snapshot.data![index].todo}',
+
+                                      style: TextStyle(
+                                        color:
+                                            Colors.blueGrey,
+                                        fontWeight:
+                                            FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                )
-              : Center(child: Text('깔끔한 녀석'));
-        },
+                      );
+                    },
+                  )
+                : Center(
+                    child: Column(
+                      mainAxisAlignment:
+                          MainAxisAlignment.end,
+                      children: [
+                        Image.asset(
+                          'images/first01.png',
+                          width: 200,
+                          height: 600,
+                        ),
+                      ],
+                    ),
+                  );
+          },
+        ),
       ),
     );
   } //

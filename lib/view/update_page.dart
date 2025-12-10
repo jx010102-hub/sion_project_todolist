@@ -28,9 +28,9 @@ class _UpdatePage extends State<UpdatePage> {
     handler = DatabaseHandler();
     todotextcontroller = TextEditingController();
     memocontroller = TextEditingController();
-    dropDownValue = '보통';
+    dropDownValue = '기본';
 
-    items = ['보통', '바쁨', '여유있음'];
+    items = ['기본', '바쁨', '여유있음'];
 
     todotextcontroller.text = value[1];
     memocontroller.text = value[2];
@@ -40,55 +40,88 @@ class _UpdatePage extends State<UpdatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('할일 수정')),
+      appBar: AppBar(
+        title: Text('UpDate Page'),
+        centerTitle: true,
+        backgroundColor: Colors.amber,
+        foregroundColor: Colors.black,
+      ),
       body: Center(
-        child: Column(
-          children: [
-            Text('ToDay'),
-            TextField(
-              controller: todotextcontroller,
-              decoration: InputDecoration(
-                labelText: '할일을 수정 하세요',
-                border: OutlineInputBorder(),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextField(
+                  controller: todotextcontroller,
+                  decoration: InputDecoration(
+                    labelText: '할일을 입력 하세요',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.text,
+                ),
               ),
-              keyboardType: TextInputType.text,
-            ),
-            Text('Memo'),
-            TextField(
-              controller: memocontroller,
-              decoration: InputDecoration(
-                labelText: '메모를 수정 하세요',
-                border: OutlineInputBorder(),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextField(
+                  controller: memocontroller,
+                  decoration: InputDecoration(
+                    labelText: '메모를 입력 하세요',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.text,
+                ),
               ),
-              keyboardType: TextInputType.text,
-            ),
-            Text('state'),
-            DropdownButton(
-              value: dropDownValue,
-              icon: Icon(Icons.keyboard_arrow_down),
-              items: items.map((String items) {
-                return DropdownMenuItem(
-                  value: items,
-                  child: Text(items),
-                );
-              }).toList(),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: DropdownButton(
+                      value: dropDownValue,
+                      icon: Icon(Icons.keyboard_arrow_down),
+                      items: items.map((String items) {
+                        return DropdownMenuItem(
+                          value: items,
+                          child: Text(items),
+                        );
+                      }).toList(),
 
-              onChanged: (value) {
-                //
-                dropDownValue = value!;
-                imageName = 'images/$value.jpg';
-                setState(() {});
-              },
-            ),
-            Image.asset(imageName, width: 100),
+                      onChanged: (value) {
+                        //
+                        dropDownValue = value!;
+                        imageName = 'images/$value.png';
+                        setState(() {});
+                      },
+                    ),
+                  ),
+                  Image.asset(imageName, width: 100),
+                ],
+              ),
 
-            ElevatedButton(
-              onPressed: () async {
-                await updateAction();
-              },
-              child: Text('수정하기'),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.all(30.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    updateAction();
+                    setState(() {});
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.amber,
+                    foregroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        10,
+                      ),
+                    ),
+                  ),
+                  child: Text('수정하기'),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
